@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import createWordlItem from "./createWorldItem";
+import createWordlItem from "./createWorldItem.js";
 
 
-export default function Gamebody() {
+export default function Gamebody({giveWord}) {
 
-  
-  
+  const [inputLength, setInputLength] = useState(0);
+
+  useEffect(() => {
+    if (giveWord && giveWord.word) {
+      setInputLength(giveWord.word.length);
+    }
+  }, [giveWord]);
+
   function PrintWord(props) {
     const result = props.result;
     const letter = props.letter;
@@ -17,8 +23,6 @@ export default function Gamebody() {
     
       const letterBox =
         `text-xl grid place-content-center rounded-lg drop-shadow-md max-h-[4em] max-w-[4em]`;
-    //   return <div className={`${color} ${letterBox} `}>{letter}</div>;
-    // }
 
     //Style component for responsive size-ing
     const style = {
@@ -33,32 +37,22 @@ export default function Gamebody() {
   function InputGuess() {
     const [input, setInput] = useState("");
     
-  const [guesses, setGuesses] = useState([
-    [
-      { letter: "A", result: "correct", color: "bg-green-500" },
-      { letter: "R", result: "misplaced", color: "bg-yellow-500" },
-      { letter: "M", result: "incorrect", color: "bg-red-500" },
-      { letter: "E", result: "incorrect", color: "bg-red-500" },
-      { letter: "N", result: "correct", color: "bg-green-500" },
-    ],
-  ]);
+  const [guesses, setGuesses] = useState([]);
 
     const handleInputChange = (e) => {
       setInput(e.target.value.trim());
     };
 
     const submitGuess = () => {
-      if (input.trim() !== "") {
-        const newGuess = input
-          .toUpperCase()
-          .split("")
-          .map((letter) => ({
-            letter,
-            result: "pending", // Set default result
-            color: "bg-green-500", // Set default color
-          }));
-        setGuesses([...guesses, newGuess]); // Push new guess as an array of objects
-        setInput("");
+      if(input.length == inputLength){
+        if (input.trim() !== "") {
+          const newGuess = createWordlItem(giveWord.word, input)
+          setGuesses([...guesses, newGuess]); // Push new guess as an array of objects
+          setInput("");
+        }
+      } else {
+        document.querySelector('#inputBox').value = ''
+        document.querySelector('#inputBox').placeholder = "Guessed word isn't long enogh"
       }
     };
 
@@ -78,6 +72,8 @@ export default function Gamebody() {
           value={input}
           onChange={handleInputChange}
           onKeyDown={handleKeyPress}
+          minLength={inputLength}
+          maxLength={inputLength}
           />
         <div className='flex flex-col justify-start justify-center justify-evenly w-full'>
           {guesses.slice().reverse().map((guess, index) => (

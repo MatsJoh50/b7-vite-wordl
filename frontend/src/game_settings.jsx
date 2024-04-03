@@ -4,11 +4,12 @@ import DupeLetter from "./components/dupeletters";
 import DropDown from "./components/dropdown";
 
 
-export default function Options() {
+export default function Options({getWord}) {
 
-  const [randomWord, setRandomWord] = useState();
   const [dupeValue, setDupeValue] = useState(true);
   const [dropValue, setDropValue] = useState(0);
+
+
 
 
   //Set drop value to 0 when changing from true/false
@@ -24,11 +25,9 @@ export default function Options() {
   }
   }, [dropValue])
   
-  //Control to see that random fetch works.
-  useEffect(() => {
-      console.log(randomWord)
-  }, [randomWord]);
-
+const gettingRandomWord = (RndWord) => {
+  getWord(RndWord);
+}
   const handleDupeChange = (newDupeValue) => {
     setDupeValue(newDupeValue);
    }
@@ -41,7 +40,7 @@ export default function Options() {
   async function fetchWord(){
     const response = await fetch(`/api/randomword/${dupeValue}/${dropValue}`)
     const parsedWord = await response.json()
-    await setRandomWord(parsedWord)
+    await gettingRandomWord(parsedWord)
 
   }
 
