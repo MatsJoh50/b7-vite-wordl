@@ -1,12 +1,16 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import createWordlItem from "./createWorldItem.js";
+import createWordlItem from "./createWorldItem.jsx";
 
 
-export default function Gamebody({giveWord}) {
+export default function Gamebody({giveWord, isComplete, setIsComplete}) {
 
+  
+  const toggleModal = () => {
+    setIsComplete(!isComplete);
+  };
+  
   const [inputLength, setInputLength] = useState(0);
-
   useEffect(() => {
     if (giveWord && giveWord.word) {
       setInputLength(giveWord.word.length);
@@ -40,15 +44,20 @@ export default function Gamebody({giveWord}) {
   const [guesses, setGuesses] = useState([]);
 
     const handleInputChange = (e) => {
-      setInput(e.target.value.trim());
+      setInput(e.target.value.trim().toUpperCase());
     };
 
     const submitGuess = () => {
       if(input.length == inputLength){
         if (input.trim() !== "") {
           const newGuess = createWordlItem(giveWord.word, input)
+
           setGuesses([...guesses, newGuess]); // Push new guess as an array of objects
           setInput("");
+
+          if (newGuess.every(guess => guess.result === 'Correct')) {
+            toggleModal();
+          }
         }
       } else {
         document.querySelector('#inputBox').value = ''
@@ -99,8 +108,8 @@ export default function Gamebody({giveWord}) {
   return (
     <div
       id='maby_body'
-      className='bg-bg w-90 h-full flex justify-center items-center'>
-      <div className='min-w-4/5 w-4/5 bg-bars h-full flex flex-col  mt-10 rounded-md '>
+      className='bg-[#f5f5f5] w-90 h-full flex justify-center items-center'>
+      <div className='min-w-4/5 w-4/5 bg-[#34495e] h-full flex flex-col  mt-10 rounded-md '>
         <div className='w-full items-center flex justify-center mx-auto mb-20'>
           <InputGuess />
         </div>

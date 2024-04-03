@@ -61,7 +61,7 @@ const gettingRandomWord = (RndWord) => {
 
 
   return (
-    <div className='w-4/5 bg-bars rounded-lg flex flex-col mx-auto my-5 pb-4'>
+    <div className='w-4/5 bg-[#34495e] rounded-lg flex flex-col mx-auto my-5 pb-4'>
       <h2
         id='game_settings_header'
         className='justify-center flex text-3xl text-white mb-2'>
