@@ -4,13 +4,22 @@ import DupeLetter from "./components/dupeletters";
 import DropDown from "./components/dropdown";
 
 
-export default function Options({getWord}) {
+export default function Options({getWord, gameSettings, isComplete}) {
 
   const [dupeValue, setDupeValue] = useState(true);
   const [dropValue, setDropValue] = useState(0);
 
 
+  useEffect(() => {
+    if(isComplete){
 
+      gameSettings({
+        dupe: dupeValue,
+        drop: dropValue,
+      })
+
+    }
+  },[isComplete])
 
   //Set drop value to 0 when changing from true/false
   useEffect(() => {
@@ -32,8 +41,8 @@ const gettingRandomWord = (RndWord) => {
     setDupeValue(newDupeValue);
    }
 
-  const handleDropDown = (value) => {
-    setDropValue(value);
+  const handleDropDown = (newDropValue) => {
+    setDropValue(newDropValue);
     // console.log('drop value:', value);
   }
 

@@ -10,22 +10,44 @@ function App() {
   const [randomWord, setRandomWord] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const [scoreName, setScoreName] = useState();
+  const [gameSettings, setGameSettings] = useState();
+  const [amountOfGuesses, setAmountOfGuesses] = useState();
+  const [gameComplete, setGameComplete] = useState(false);
 
+
+useEffect(() => {
+  if(gameComplete){
+    setGameComplete(!gameComplete)
+    console.log('new game compleate:',gameComplete)
+  }
+}, [scoreName, amountOfGuesses, gameSettings, gameComplete])
+
+  //Console.log's to controll the code.
+  useEffect(() => {
+    console.log('New Random word:', randomWord)
+  }, [randomWord]);
+  
   useEffect(() => {
     console.log('ScoreName: ', scoreName)
   }, [scoreName]);
 
-  //Control to see that random fetch works.
   useEffect(() => {
-      console.log(randomWord)
-  }, [randomWord]);
+    console.log('Settings:', gameSettings)
+  }, [scoreName])
+
+  useEffect(() => {
+    console.log('Guesses:', amountOfGuesses)
+  }, [scoreName])
+
+  /////////////////////////
+
 
   return (
       <div className='flex flex-col bg-[#f5f5f5] mt-0 min-w-[80vw] w-[80vw] h-[100vh] mx-auto'>
-        <SetupHighscore isComplete={isOpen} setIsComplete={setIsOpen} setScoreName={setScoreName}/>
+        <SetupHighscore isOpen={isOpen} setIsOpen={setIsOpen} setScoreName={setScoreName} />
         <Navbar />
-        <Options getWord={setRandomWord} />
-        <Gamebody giveWord={randomWord} isComplete={isOpen} setIsComplete={setIsOpen}/>
+        <Options getWord={setRandomWord} gameSettings={setGameSettings} isOpen={isOpen} isComplete={gameComplete}/>
+        <Gamebody giveWord={randomWord} isOpen={isOpen} setIsOpen={setIsOpen} sendAmount={setAmountOfGuesses} isComplete={gameComplete} setComplete={setGameComplete}/>
       </div>
   );
 }

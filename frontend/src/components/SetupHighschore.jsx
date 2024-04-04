@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-export default function SetupHighscore({ isComplete, setIsComplete, setScoreName }) {
+export default function SetupHighscore({ isOpen, setIsOpen, setScoreName, setComplete }) {
   const toggleModal = () => {
-    setIsComplete(!isComplete);
+    setIsOpen(!isOpen);
   };
 
   const sendName = () => {
@@ -11,7 +11,7 @@ export default function SetupHighscore({ isComplete, setIsComplete, setScoreName
 
   return (
     <div>
-      {isComplete && (
+      {isOpen && (
         <div className='fixed z-10 inset-0 overflow-y-auto bg-gray-500 bg-opacity-90 flex items-center justify-center'>
           <div className='relative bg-blue-500 bg-opacity-80 p-8 w-[40vw] h-[20vh]  border rounded-lg'>
             <button

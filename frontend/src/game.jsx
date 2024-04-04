@@ -3,11 +3,13 @@ import { useState } from "react";
 import createWordlItem from "./createWorldItem.jsx";
 
 
-export default function Gamebody({giveWord, isComplete, setIsComplete}) {
-
+export default function Gamebody({giveWord, isOpen, setIsOpen, sendAmount, isComplete, setComplete}) {
   
+
+
+
   const toggleModal = () => {
-    setIsComplete(!isComplete);
+    setIsOpen(!isOpen);
   };
   
   const [inputLength, setInputLength] = useState(0);
@@ -18,7 +20,6 @@ export default function Gamebody({giveWord, isComplete, setIsComplete}) {
   }, [giveWord]);
 
   function PrintWord(props) {
-    const result = props.result;
     const letter = props.letter;
     const color = props.color;
     const inputSize = props.size;
@@ -38,15 +39,29 @@ export default function Gamebody({giveWord, isComplete, setIsComplete}) {
     return <div style={style} className={`${color} ${letterBox}`} >{letter}</div>;
   }
 
-  function InputGuess() {
-    const [input, setInput] = useState("");
-    
-  const [guesses, setGuesses] = useState([]);
+  
 
+  function InputGuess() {
+
+    
+    const [input, setInput] = useState("");
+    const [guesses, setGuesses] = useState([]);
+
+  //Updates the value "Input" for each keystroke.
     const handleInputChange = (e) => {
       setInput(e.target.value.trim().toUpperCase());
     };
 
+  //Checks for "Enter" to correct your guess.
+    const handleKeyPress = (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitGuess();
+      }
+    };
+
+    //Function do add and controll the new guess.
+    //Will also open modal for highscore name registration if correct word is found.
     const submitGuess = () => {
       if(input.length == inputLength){
         if (input.trim() !== "") {
@@ -56,7 +71,9 @@ export default function Gamebody({giveWord, isComplete, setIsComplete}) {
           setInput("");
 
           if (newGuess.every(guess => guess.result === 'Correct')) {
+            sendAmount(guesses.length)
             toggleModal();
+            setComplete(true);
           }
         }
       } else {
@@ -65,12 +82,7 @@ export default function Gamebody({giveWord, isComplete, setIsComplete}) {
       }
     };
 
-    const handleKeyPress = (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        submitGuess();
-      }
-    };
+
 
     return (
       <div className="flex flex-col justify-center items-center w-full">
