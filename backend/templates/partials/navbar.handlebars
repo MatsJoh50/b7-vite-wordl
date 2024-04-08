@@ -1,0 +1,11 @@
+    <nav class="h-24 bg-[#34495e] w-full flex-col flex justify-end pb-2">
+      <div class="text-3xl">
+        <ul class="flex flex-row md:justify-evenly mb-1 mt-auto">
+            {{#each menu}}
+            <li>
+            <a href="{{this.link}}" class="text-blue-500">{{this.lable}}</a>
+            </li>
+            {{/each}}
+        </ul>
+      </div>
+    </nav>

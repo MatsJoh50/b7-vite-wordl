@@ -45,7 +45,7 @@ useEffect(() => {
   return (
       <div className='flex flex-col bg-[#f5f5f5] mt-0 min-w-[80vw] w-[80vw] h-[100vh] mx-auto'>
         <SetupHighscore isOpen={isOpen} setIsOpen={setIsOpen} setScoreName={setScoreName} />
-        <Navbar />
+        {/* <Navbar /> */}
         <Options getWord={setRandomWord} gameSettings={setGameSettings} isOpen={isOpen} isComplete={gameComplete}/>
         <Gamebody giveWord={randomWord} isOpen={isOpen} setIsOpen={setIsOpen} sendAmount={setAmountOfGuesses} isComplete={gameComplete} setComplete={setGameComplete}/>
       </div>

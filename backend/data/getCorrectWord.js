@@ -16,7 +16,7 @@ export default function getCorrectWord(bool, length) {
   // Choose a random word from the specified category and length
   let randomWord = "";
 
-  if (bool == 'true') {
+  if (bool == 'false') {
     const singleWords = sortedWords.single[lengthOfWord];
     if (singleWords && singleWords.length > 0) {
       const randomIndex = Math.floor(Math.random() * singleWords.length);
