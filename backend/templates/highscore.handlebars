@@ -1,11 +1,10 @@
-    <div class="m-0 h-full">
+    <div class="m-0 h-full max-w-full grid grid-flow-row auto-cols-max grid-cols-5 gap-3">
         {{#each hs}}
-        <div>
+        <div class="border m-3">
             <p>{{this.name}}</p>
             <p>{{this.time}}</p>
             <p>{{this.lengthOfWord}}</p>
             <p>{{this.dupes}}</p>
         </div>
         {{/each}}
-    <p>testar highscore</p>
     </div>

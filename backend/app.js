@@ -27,32 +27,16 @@ const menuItems = [
   },
 ];
 
-const highscore = [
-  {
+const highscore = [];
+for(let i=0;i<50;i++){
+  highscore.push(
+    {
     name: "mats",
-    time: "snab som fan",
+    time: "Snabb",
     dupes: "yes",
     lengthOfWord: 21
-  },
-  {
-    name: "mats",
-    time: "snab som fan",
-    dupes: "yes",
-    lengthOfWord: 21
-  },
-  {
-    name: "mats",
-    time: "snab som fan",
-    dupes: "yes",
-    lengthOfWord: 21
-  },
-  {
-    name: "mats",
-    time: "snab som fan",
-    dupes: "yes",
-    lengthOfWord: 21
-  },
-]
+  })
+}
 async function renderPage(res, page) {
   res.render(page, {
     menu: menuItems.map((item) => {
@@ -73,9 +57,13 @@ app.use((req, res, next) => {
 app.get("/", async (req, res) => {
   renderPage(res, "index");
 });
+
 app.get("/about", async (req, res) => {
-  renderPage(res, "about");
+  const html = await fs.readFile('../frontend/dist/about.html');
+  renderPage(res, 'about');
 });
+
+
 app.get("/highscore", async (req, res) => {
   renderPage(res, "highscore");
 });
