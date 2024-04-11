@@ -1,10 +1,21 @@
-    <div class="m-0 h-full max-w-full grid grid-flow-row auto-cols-max grid-cols-5 gap-3">
-        {{#each hs}}
-        <div class="border m-3">
-            <p>{{this.name}}</p>
-            <p>{{this.time}}</p>
-            <p>{{this.lengthOfWord}}</p>
-            <p>{{this.dupes}}</p>
-        </div>
+    {{!-- 
+    const hsSchema = new mongoose.Schema({
+    name: String,
+    startTime: Date,
+    dupe: Boolean,
+    value: Number,
+    endTime: Date,
+    guesses: Number,
+}) --}}
+    
+    <div class="m-0 h-full max-w-full grid grid-flow-col auto-cols-max grid-cols-5 gap-3">
+        {{#each output}}
         {{/each}}
-    </div>
+        <div class="border m-3">
+            <p>Mats Johansson</p>
+            <p>name</p>
+            <p>name</p>
+            <p>name</p>
+            <p>name</p>
+        </div>
+</div>

@@ -1,7 +1,17 @@
 import express from "express";
-import fs from "fs/promises";
+import fs from "fs";
 import getCorrectWord from "./data/getCorrectWord.js";
 import { engine } from "express-handlebars";
+import fetchHighscore from "./fetchHighscore.js";
+import mongoose from "mongoose";
+import {hsItem} from "./src/hsModel.js"
+import sortList from './src/sortHighScore.js'
+
+mongoose.connect('mongodb://127.0.0.1:27017/Highscores').then(()=> {
+  console.log('Db connected');
+});
+
+
 
 const app = express();
 app.use(express.json());
@@ -19,7 +29,7 @@ const menuItems = [
   },
   {
     lable: "High Score",
-    link: "/highscore",
+    link: "/gethighscore",
   },
   {
     lable: "About",
@@ -27,17 +37,23 @@ const menuItems = [
   },
 ];
 
-const highscore = [];
-for(let i=0;i<50;i++){
-  highscore.push(
-    {
-    name: "mats",
-    time: "Snabb",
-    dupes: "yes",
-    lengthOfWord: 21
-  })
+// Function to get the filename of the JavaScript file in the specified directory
+function getJsFilename(directory, ending) {
+  // Read the contents of the directory
+  const files = fs.readdirSync(directory);
+
+  // Filter the files to only include JavaScript files
+  const jsFiles = files.filter(file => file.endsWith(`.${ending}`));
+
+  // Return the first JavaScript file found (assuming there's only one)
+  return jsFiles[0];
 }
-async function renderPage(res, page) {
+const jsFilename = getJsFilename('../frontend/dist/assets/','js');
+const cssFilename = getJsFilename('../frontend/dist/assets/','css');
+
+console.log(cssFilename)
+
+async function renderPage(res, page, output) {
   res.render(page, {
     menu: menuItems.map((item) => {
       return {
@@ -45,7 +61,8 @@ async function renderPage(res, page) {
         link: item.link,
       };
     }),
-    hs: highscore,
+    css: cssFilename,
+    output: output,
   });
 }
 
@@ -55,7 +72,8 @@ app.use((req, res, next) => {
 });
 
 app.get("/", async (req, res) => {
-  renderPage(res, "index");
+
+  renderPage(res, "react", jsFilename);
 });
 
 app.get("/about", async (req, res) => {
@@ -64,9 +82,7 @@ app.get("/about", async (req, res) => {
 });
 
 
-app.get("/highscore", async (req, res) => {
-  renderPage(res, "highscore");
-});
+
 
 app.get("/api/randomword/:type/:value", (req, res) => {
   const type = req.params.type;
@@ -76,6 +92,34 @@ app.get("/api/randomword/:type/:value", (req, res) => {
   res.status(201).json({ word });
 });
 
+app.post("/api/highscore/item", async (req,res) => {
+  const itemData = req.body;
+
+  const itemModel = new hsItem(itemData);
+  await itemModel.save();
+
+  res.status(201).json(itemData);
+})
+
+
+app.get("/gethighscore", async (req, res) => {
+  
+  renderPage(res, "react", jsFilename);
+
+});
+
+
+app.get("/api/highscore/:type/:value", async (req,res) => {
+  
+  const type = req.params.type;
+  const value = req.params.value;
+  
+  const sortedList = sortList(type, value)
+  renderPage(res, "highscore", sortedList);
+
+})
+
+ 
 app.use("../frontend", express.static("./dist"));
 app.use("/assets", express.static("../frontend/dist/assets"));
 app.use("/src", express.static("./src"));
