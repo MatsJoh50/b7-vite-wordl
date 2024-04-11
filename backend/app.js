@@ -109,12 +109,13 @@ app.get("/gethighscore", async (req, res) => {
 });
 
 
-app.get("/api/highscore/:type/:value", async (req,res) => {
+app.get("/api/highscore/:dupe/:value", async (req,res) => {
   
-  const type = req.params.type;
-  const value = req.params.value;
+  const dupe = req.params.dupe;
+  const words = req.params.value;
   
-  const sortedList = sortList(type, value)
+  const sortedList = await sortList(dupe, words)
+  console.log('sorted list express:',sortedList.length)
   renderPage(res, "highscore", sortedList);
 
 })

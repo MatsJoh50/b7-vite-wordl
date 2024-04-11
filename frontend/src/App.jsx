@@ -42,7 +42,6 @@ function App() {
   // /////////////////////////
 
   if (window.location.pathname === "/gethighscore") {
-    console.log('test');
     return (
       <div className='flex flex-col bg-[#f5f5f5] mt-0 min-w-[80vw] w-[80vw] h-[100vh] mx-auto'>
         <ShowcaseHighscore />
