@@ -6,8 +6,11 @@ import fetchHighscore from "./fetchHighscore.js";
 import mongoose from "mongoose";
 import {hsItem} from "./src/hsModel.js"
 import sortList from './src/sortHighScore.js'
+import createWordlItem from './src/createWorldItem.js'
+import dotenv from "dotenv";
 
-mongoose.connect('mongodb://127.0.0.1:27017/Highscores').then(()=> {
+dotenv.config();
+mongoose.connect(process.env.DB_URL).then(()=> {
   console.log('Db connected');
 });
 
@@ -91,6 +94,20 @@ app.get("/api/randomword/:type/:value", (req, res) => {
   console.log(word);
   res.status(201).json({ word });
 });
+
+app.get("/api/guessword", (req, res) => {
+  //create unique user
+  //fetch word
+  //then =>
+  //collect guesses
+  //send to function
+  //respond with correction array
+
+
+  const {j} = req.body;
+
+})
+
 
 app.post("/api/highscore/item", async (req,res) => {
   const itemData = req.body;
