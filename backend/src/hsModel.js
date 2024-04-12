@@ -1,12 +1,16 @@
+// hsSchema.js
 import mongoose from "mongoose";
 
-const hsItem = mongoose.model('Scores', {
+const hsSchema = new mongoose.Schema({
     name: String,
-    startTime: Date,
+    sTime: Date,
     dupe: Boolean,
-    value: Number,
-    endTime: Date,
+    length: Number,
+    eTime: Date,
     guesses: Number,
+    score: Number
 });
 
-export {hsItem}
+const hsItem = mongoose.model('Scores', hsSchema);
+
+export { hsItem, hsSchema };

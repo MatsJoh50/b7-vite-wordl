@@ -15,14 +15,16 @@
   {{#each output}}
   <div class="border m-3 mx-auto flex flex-col w-[60vw] p-3">
     <div class="flex flex-row justify-evenly mb-3">
-      <p>Name: {{this.name}}</p>
+      <p class="text-xl">Name: {{this.name}}</p>
       <p>Duplicates: {{this.dupe}}</p>
-      <p>Length of word: {{this.value}}</p>
+      <p>Length of word: {{this.length}}</p>
     </div>
 
     <div class="flex flex-row justify-evenly">
-      <p>Time: {{this.startTime}}</p>
-      <p>Score:</p>
+      <p>Time: {{this.sTime}}</p>
+    </div>
+    <div class="flex flex-row justify-evenly">
+      <p class="text-xl">Score: {{this.score}}</p>
     </div>
   </div>
   {{/each}}

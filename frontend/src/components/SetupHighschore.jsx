@@ -16,7 +16,7 @@ export default function SetupHighscore({ isOpen, setIsOpen, setScoreName, setCom
           <div className='relative bg-blue-500 bg-opacity-80 p-8 w-[40vw] h-[20vh]  border rounded-lg'>
             <button
               onClick={toggleModal}
-              className='absolute top-0 right-0 m-4 text-gray-500 hover:text-gray-700'>
+              className='absolute top-0 right-0 m-4 p-2 bg-white text-gray-500 hover:text-gray-700'>
               Close
             </button>
             <h2 className='text-lg font-semibold mb-4'>
@@ -30,7 +30,7 @@ export default function SetupHighscore({ isOpen, setIsOpen, setScoreName, setCom
                 toggleModal();
               }}
 
-              className='absolute bottom-0 right-0 m-4 text-gray-500 hover:text-gray-700'
+              className='absolute bottom-0 right-0 m-4 p-2 bg-white text-gray-500 hover:text-gray-700'
               >
               Submit name
             </button>

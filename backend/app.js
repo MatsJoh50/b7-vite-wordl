@@ -8,6 +8,8 @@ import {hsItem} from "./src/hsModel.js"
 import sortList from './src/sortHighScore.js'
 import createWordlItem from './src/createWorldItem.js'
 import dotenv from "dotenv";
+import bodyParser from "body-parser";
+
 
 dotenv.config();
 mongoose.connect(process.env.DB_URL).then(()=> {
@@ -19,6 +21,7 @@ mongoose.connect(process.env.DB_URL).then(()=> {
 const app = express();
 app.use(express.json());
 
+app.use(bodyParser.json());
 app.engine("handlebars", engine({ partialsDir: "./templates/partials" }));
 app.set("view engine", "handlebars");
 app.set("views", "./templates");
@@ -40,21 +43,15 @@ const menuItems = [
   },
 ];
 
-// Function to get the filename of the JavaScript file in the specified directory
+// Function to get the filename of react files in the specified directory
 function getJsFilename(directory, ending) {
-  // Read the contents of the directory
   const files = fs.readdirSync(directory);
-
-  // Filter the files to only include JavaScript files
   const jsFiles = files.filter(file => file.endsWith(`.${ending}`));
-
-  // Return the first JavaScript file found (assuming there's only one)
   return jsFiles[0];
 }
 const jsFilename = getJsFilename('../frontend/dist/assets/','js');
 const cssFilename = getJsFilename('../frontend/dist/assets/','css');
 
-console.log(cssFilename)
 
 async function renderPage(res, page, output) {
   res.render(page, {
@@ -69,10 +66,12 @@ async function renderPage(res, page, output) {
   });
 }
 
-app.use((req, res, next) => {
-  console.log(req.method, req.path);
-  next();
-});
+
+//   LOG EVERYTHING THAT IS GOING ON
+// app.use((req, res, next) => {
+//   console.log(req.method, req.path);
+//   next();
+// });
 
 app.get("/", async (req, res) => {
 
@@ -84,9 +83,6 @@ app.get("/about", async (req, res) => {
   renderPage(res, 'about');
 });
 
-
-
-
 app.get("/api/randomword/:type/:value", (req, res) => {
   const type = req.params.type;
   const value = req.params.value;
@@ -95,36 +91,33 @@ app.get("/api/randomword/:type/:value", (req, res) => {
   res.status(201).json({ word });
 });
 
+
+
 app.get("/api/guessword", (req, res) => {
   //create unique user
   //fetch word
+
   //then =>
   //collect guesses
   //send to function
   //respond with correction array
-
-
-  const {j} = req.body;
-
 })
 
 
 app.post("/api/highscore/item", async (req,res) => {
   const itemData = req.body;
+  console.log('body', req.body)
+  console.log('itemData', itemData)
 
   const itemModel = new hsItem(itemData);
   await itemModel.save();
 
-  res.status(201).json(itemData);
+res.status(201).json(itemData);
 })
 
-
 app.get("/gethighscore", async (req, res) => {
-  
   renderPage(res, "react", jsFilename);
-
 });
-
 
 app.get("/api/highscore/:dupe/:value", async (req,res) => {
   
