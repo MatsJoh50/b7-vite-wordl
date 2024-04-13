@@ -8,13 +8,14 @@ import sortList from './src/sortHighScore.js'
 // import createWordlItem from './src/createWorldItem.js'
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-
+import * as uuid from "uuid";
 
 dotenv.config();
 mongoose.connect(process.env.DB_URL).then(()=> {
   console.log('Db connected');
 });
 
+const GAMES = [];
 
 
 const app = express();
@@ -91,17 +92,34 @@ app.get("/api/randomword/:type/:value", (req, res) => {
 });
 
 
+app.get("/api/games/:type/:value", (req, res) => {
 
-app.get("/api/guessword", (req, res) => {
-  //create unique user
-  //fetch word
+  const type = req.params.type;
+  const value = req.params.value;
 
-  //then =>
-  //collect guesses
-  //send to function
-  //respond with correction array
+  const game = {
+    correctWord: getCorrectWord(type, value),
+    guesses: [],
+    id: uuid.v4(),
+    startTime: new Date(),
+  };
+
+  GAMES.push(game);
+
+  res.status(201).json({id: game.id});
+});
+
+app.post("/api/games/:id/guesses", (req, res) => {
+  const game = GAMES.find((savedGame) => savedGame.id == req.params.id);
+  if(game){
+    const guess = req.body.guess;
+    game.guesses.push(guess);
+
+    if(guess===game.correctWord){
+      
+    }
+  }
 })
-
 
 app.post("/api/highscore/item", async (req,res) => {
   const itemData = req.body;
