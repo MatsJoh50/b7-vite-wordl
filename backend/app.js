@@ -2,11 +2,10 @@ import express from "express";
 import fs from "fs";
 import getCorrectWord from "./data/getCorrectWord.js";
 import { engine } from "express-handlebars";
-import fetchHighscore from "./fetchHighscore.js";
 import mongoose from "mongoose";
 import {hsItem} from "./src/hsModel.js"
 import sortList from './src/sortHighScore.js'
-import createWordlItem from './src/createWorldItem.js'
+// import createWordlItem from './src/createWorldItem.js'
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 
