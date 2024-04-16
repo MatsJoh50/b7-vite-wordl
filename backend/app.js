@@ -5,7 +5,7 @@ import { engine } from "express-handlebars";
 import mongoose from "mongoose";
 import {hsItem} from "./src/hsModel.js"
 import sortList from './src/sortHighScore.js'
-// import createWordlItem from './src/createWorldItem.js'
+import createWordlItem from './src/createWorldItem.js'
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import * as uuid from "uuid";
@@ -114,7 +114,8 @@ app.post("/api/games/:id/guesses", (req, res) => {
   const game = GAMES.find((savedGame) => savedGame.id == req.params.id);
   if(game){
     const guess = req.body.guess;
-    game.guesses.push(game.correctWord, guess); //change guess to game-function with styled return value.
+    console.log('req.body guess:', guess)
+    game.guesses.push(createWordlItem(game.correctWord, guess)); //change guess to game-function with styled return value.
 
     if(guess===game.correctWord){
       game.endTime = new Date();
@@ -136,17 +137,22 @@ app.post("/api/games/:id/guesses", (req, res) => {
   }
 });
 
-app.post("/api/highscore/item", async (req,res) => {
-  const itemData = req.body;
-  console.log('body', req.body)
-  console.log('itemData', itemData)
 
-  const itemModel = new hsItem(itemData);
+//Post to highscore.
+app.post("/api/highscore/item", async (req,res) => {
+
+  const game = GAMES.find((savedGame) => savedGame.id == req.body.userId);
+  game.name = req.body.name;
+  console.log('body', req.body)
+
+  const itemModel = new hsItem(game);
   await itemModel.save();
 
 res.status(201).json(itemData);
 })
 
+
+//Get values and then render highscore page
 app.get("/gethighscore", async (req, res) => {
   renderPage(res, "react", jsFilename);
 });

@@ -8,7 +8,7 @@ import SetupHighscore from "./components/SetupHighschore";
 
 
 function App() {
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [scoreName, setScoreName] = useState('');
   const [gameSettings, setGameSettings] = useState();
@@ -35,12 +35,13 @@ function App() {
   
       const payload = {
         name: scoreName,
-        dupe: gameSettings.dupe,
-        sTime: startTime,
-        length: gameSettings.drop,
-        guesses: amountOfGuesses + 1,
-        eTime: endTime,
-        score: newScore, // Calculate score
+        userId: userId,
+        // dupe: gameSettings.dupe,
+        // sTime: startTime,
+        // length: gameSettings.drop,
+        // guesses: amountOfGuesses + 1,
+        // eTime: endTime,
+        // score: newScore, // Calculate score
       };
   
   
@@ -76,14 +77,12 @@ function App() {
           setScoreName={setScoreName}
         />
         <Options
-          getWord={setUserId}
           gameSettings={setGameSettings}
           isOpen={isOpen}
           isComplete={gameComplete}
-          userId={setUserId}
+          setUserId={setUserId}
         />
         <Gamebody
-          giveWord={userId}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           sendAmount={setAmountOfGuesses}

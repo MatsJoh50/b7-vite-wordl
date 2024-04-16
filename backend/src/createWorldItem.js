@@ -3,8 +3,8 @@ export default function createWordlItem(word, guess){
     const guessingWord = guess.toUpperCase().split('');    
     const correct = []
 
-console.log('rightWord', rightWord)
-console.log('guess', guessingWord)
+// console.log('rightWord', rightWord)
+// console.log('guess', guessingWord)
 
     for(let i = 0; i < rightWord.length; i++){
         if(rightWord[i] === guessingWord[i]){

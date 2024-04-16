@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import DupeLetter from "./components/dupeletters";
 import DropDown from "./components/dropdown";
 
-export default function Options({ getWord, gameSettings, isComplete, setUserId }) {
+export default function Options({ gameSettings, isComplete, setUserId }) {
   const [dupeValue, setDupeValue] = useState(true);
   const [dropValue, setDropValue] = useState(0);
 
@@ -11,6 +11,7 @@ export default function Options({ getWord, gameSettings, isComplete, setUserId }
   const handleUserId = (newUserId) => {
     setUserId(newUserId)
   };
+
   const handleDupeChange = (newDupeValue) => {
     setDupeValue(newDupeValue);
   };
@@ -36,14 +37,10 @@ export default function Options({ getWord, gameSettings, isComplete, setUserId }
   }, [dupeValue]);
 
 
-  const getUserId = (RndWord) => {
-    getWord(RndWord);
-  };
-
   async function fetchWord() {
     const response = await fetch(`/api/games/${dupeValue}/${dropValue}`);
     const userId = await response.json();
-    await handleUserId(userId);
+    await handleUserId(userId.id);
   }
 
 
