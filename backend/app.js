@@ -68,10 +68,10 @@ async function renderPage(res, page, output) {
 
 
 //   LOG EVERYTHING THAT IS GOING ON
-// app.use((req, res, next) => {
-//   console.log(req.method, req.path);
-//   next();
-// });
+app.use((req, res, next) => {
+  console.log(req.method, req.path);
+  next();
+});
 
 app.get("/", async (req, res) => {
 
@@ -91,7 +91,7 @@ app.get("/api/randomword/:type/:value", (req, res) => {
   res.status(201).json({ word });
 });
 
-
+//api to register new player and fetch a word.
 app.get("/api/games/:type/:value", (req, res) => {
 
   const type = req.params.type;
@@ -109,17 +109,32 @@ app.get("/api/games/:type/:value", (req, res) => {
   res.status(201).json({id: game.id});
 });
 
+//API to guess on backend
 app.post("/api/games/:id/guesses", (req, res) => {
   const game = GAMES.find((savedGame) => savedGame.id == req.params.id);
   if(game){
     const guess = req.body.guess;
-    game.guesses.push(guess);
+    game.guesses.push(game.correctWord, guess); //change guess to game-function with styled return value.
 
     if(guess===game.correctWord){
-      
+      game.endTime = new Date();
+
+      res.status(201).json({
+        guesses: game.guesses, //need to change the output value on frontend to this value.oiiyui                       aazuzuzziz
+
+        result: game,
+        correct: true,
+      });
+    } else  {
+      res.status(201).json({
+        guesses: game.guesses,
+        correct:false,
+      });
     }
+  } else {
+    res.status(404).end();
   }
-})
+});
 
 app.post("/api/highscore/item", async (req,res) => {
   const itemData = req.body;
@@ -136,7 +151,7 @@ app.get("/gethighscore", async (req, res) => {
   renderPage(res, "react", jsFilename);
 });
 
-app.get("/api/highscore/:dupe/:value", async (req,res) => {
+app.get("/highscore/:dupe/:value", async (req,res) => {
   
   const dupe = req.params.dupe;
   const words = req.params.value;

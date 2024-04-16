@@ -3,10 +3,7 @@ import { useState } from "react";
 import createWordlItem from "./createWorldItem.jsx";
 
 
-export default function Gamebody({giveWord, isOpen, setIsOpen, sendAmount, isComplete, setComplete}) {
-  
-
-
+export default function Gamebody({giveWord, isOpen, setIsOpen, sendAmount, isComplete, setComplete, userId}) {
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -62,16 +59,30 @@ export default function Gamebody({giveWord, isOpen, setIsOpen, sendAmount, isCom
 
     //Function do add and controll the new guess.
     //Will also open modal for highscore name registration if correct word is found.
-    const submitGuess = () => {
+
+    async function sendGuess(userId, word)  {
+      const fetchUrl = `/api/games/${userId}/guesses`;
+      const request = await fetch(fetchUrl, {
+       method: 'POST',
+       headers: {
+        "Content-Type": "application/json",
+       },
+       body: JSON.stringify({guess: word}),
+      });
+      return request.json();
+      }
+    // }
+
+    const submitGuess = async () => {
       if(input.length == inputLength){
         if (input.trim() !== "") {
-          const newGuess = createWordlItem(giveWord.word, input)
+        const newGuess = await sendGuess(userId, input)
 
           setGuesses([...guesses, newGuess]); // Push new guess as an array of objects
           setInput("");
 
           if (newGuess.every(guess => guess.result === 'Correct')) {
-            sendAmount(guesses.length)
+            // sendAmount(guesses.length)
             toggleModal();
             setComplete(true);
           }
@@ -122,7 +133,7 @@ export default function Gamebody({giveWord, isOpen, setIsOpen, sendAmount, isCom
       id='maby_body'
       className='bg-[#f5f5f5] w-90 h-full flex justify-center items-center'>
       <div className='min-w-4/5 w-4/5 bg-[#34495e] h-full flex flex-col  mt-10 rounded-md '>
-        <div className='w-full items-center flex justify-center mx-auto mb-20'>
+        <div className='w-full items-center flex justify-center mx-auto mb-20 min-h-full'>
           <InputGuess />
         </div>
       </div>

@@ -33,5 +33,5 @@ export default function getCorrectWord(bool, length) {
 
   }
   console.log(randomWord)
-  return randomWord;
+  return randomWord.toUpperCase();
 }

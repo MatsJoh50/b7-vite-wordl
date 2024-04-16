@@ -8,7 +8,7 @@ import SetupHighscore from "./components/SetupHighschore";
 
 
 function App() {
-  const [randomWord, setRandomWord] = useState('');
+  const [userId, setUserId] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [scoreName, setScoreName] = useState('');
   const [gameSettings, setGameSettings] = useState();
@@ -24,13 +24,7 @@ function App() {
       setEndTime(new Date());
     }
   }, [scoreName, amountOfGuesses, gameSettings, gameComplete]);
-  
-
-  //start the time when a word is given
-  useEffect(() => {
-    setStartTime(new Date());
-  }, [randomWord]);
-
+  // ======  NEED TO CHANGE TO BACKEND FOR HARDEND VERSION ===== 
 
   //Controlls if a player name has been enterd, if true, it will register the data to highscore-DB
   useEffect(() => {
@@ -82,18 +76,20 @@ function App() {
           setScoreName={setScoreName}
         />
         <Options
-          getWord={setRandomWord}
+          getWord={setUserId}
           gameSettings={setGameSettings}
           isOpen={isOpen}
           isComplete={gameComplete}
+          userId={setUserId}
         />
         <Gamebody
-          giveWord={randomWord}
+          giveWord={userId}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           sendAmount={setAmountOfGuesses}
           isComplete={gameComplete}
           setComplete={setGameComplete}
+          userId={userId}
         />
       </div>
     );

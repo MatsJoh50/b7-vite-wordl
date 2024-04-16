@@ -3,9 +3,22 @@ import { useEffect, useState } from "react";
 import DupeLetter from "./components/dupeletters";
 import DropDown from "./components/dropdown";
 
-export default function Options({ getWord, gameSettings, isComplete }) {
+export default function Options({ getWord, gameSettings, isComplete, setUserId }) {
   const [dupeValue, setDupeValue] = useState(true);
   const [dropValue, setDropValue] = useState(0);
+
+
+  const handleUserId = (newUserId) => {
+    setUserId(newUserId)
+  };
+  const handleDupeChange = (newDupeValue) => {
+    setDupeValue(newDupeValue);
+  };
+
+  const handleDropDown = (newDropValue) => {
+    setDropValue(newDropValue);
+  };
+
 
   useEffect(() => {
     if (isComplete) {
@@ -23,22 +36,17 @@ export default function Options({ getWord, gameSettings, isComplete }) {
   }, [dupeValue]);
 
 
-  const gettingRandomWord = (RndWord) => {
+  const getUserId = (RndWord) => {
     getWord(RndWord);
   };
+
   async function fetchWord() {
-    const response = await fetch(`/api/randomword/${dupeValue}/${dropValue}`);
-    const parsedWord = await response.json();
-    await gettingRandomWord(parsedWord);
+    const response = await fetch(`/api/games/${dupeValue}/${dropValue}`);
+    const userId = await response.json();
+    await handleUserId(userId);
   }
 
-  const handleDupeChange = (newDupeValue) => {
-    setDupeValue(newDupeValue);
-  };
 
-  const handleDropDown = (newDropValue) => {
-    setDropValue(newDropValue);
-  };
 
   function StartGame({ onClick }) {
     return (

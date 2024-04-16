@@ -30,7 +30,7 @@ export default function ShowcaseHighscore() {
 
   async function fetchHighScore() {
     try {
-      const url = `/api/highscore/${dupeValue}/${dropValue}`;
+      const url = `/highscore/${dupeValue}/${dropValue}`;
       const response = await fetch(url);
       
       // Check if the request was successful
